@@ -1,0 +1,363 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" href="assets/foto/natindo logo.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Nabila Timur Indonesia</title>
+        <style>*, html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+header {
+    background: #6882c7;
+    color: #eaeaea;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+body {
+    background-color: rgb(153, 233, 206);
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    margin-right: auto;
+    display: flex;
+    margin-left: 10px;
+    font-size: 20px;
+    align-self: center;
+    cursor: default;
+}
+
+.logo-img {
+    width: 35px;
+    height: 35px;
+}
+.logo title {
+    cursor: pointer;
+    transition: all 0.5s ease 0s;
+    gap: 6px;
+}
+
+.logo:hover {
+    color: skyblue;
+    transform: rotate(2deg);
+}
+
+.btn-cta {
+    margin-right: 10px;
+    border: none;
+    font-size: 20px;
+    padding: 6px 12px;
+    background: skyblue;
+    color: black;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+nav ul {
+    display: flex;
+    padding: 8px;
+}
+
+li {
+    list-style-type: none;
+    padding: 10px;
+}
+
+li a {
+    transition: all 0.5s ease 0s;
+    display: inline-block;
+}
+
+li a:hover {
+    color: skyblue;
+    transform: rotate(2deg);
+}
+
+a {
+    color: #eaeaea;
+    text-decoration:  none;
+}
+
+.container {
+    max-width: 2000px;
+    margin: 0;
+    padding: 20px 0;
+    color: #1c1aad;
+}
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.description {
+    font-size: 28px;
+    font-weight: bolder;
+
+} 
+
+.img-foto {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    max-width: 500px;
+}
+
+
+.tentang {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #6882c7;
+    color: bisque;
+    padding: 20px;
+}
+
+.mt-10  {
+    margin-top: 20px;
+}
+
+.card   {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-natindo    {
+    background: #6882c7;
+    text-align: center;
+    color: #eaeaea;
+    min-height: 200px;
+    max-width: 300px;
+    border-radius: 10px;
+    padding: 25px;
+    width: 25% ;
+    box-shadow: 2px 5px 5px 1px rgba(0, 0,  0, 0.5);
+
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bolder;
+}
+
+.card-description   {
+    font-size: 18px;
+    font-weight: bolder;
+    margin-top: 4px ;
+}
+
+.icon   {
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    padding: 4px;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    animation: linear;
+    animation: scroll;
+}
+
+
+@media screen and (max-width: 500px) {
+    .card {
+        flex-direction: column;
+        gap: 0;
+    }
+    .card-hanvy     {
+        width: 100%;
+        opacity: 0.10;
+    }
+    .container      {
+        padding: 0;
+    }
+    .intro          {
+        margin-top: 20px;
+    }
+    .img-foto       {
+        padding: 0;
+    }
+    nav {
+        position: fixed;
+        bottom: 0;
+        background: #1A2238;
+        z-index: 9;
+        width: 100%;
+    }
+
+content {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: none;
+    color: antiquewhite;
+
+}
+
+footer   {
+    padding: 20px;
+    text-align: center;
+    background: #6882c7;
+    color: antiquewhite;
+    margin-bottom: 70px;
+    margin-top: 70px;
+}
+
+}</style>
+    </head>
+    <body>
+        <header class="animate__animated animate__fadeindown animate__delay-2">
+            <div class="logo">
+                <img src="assets/foto/natindo logo.png" alt="logo" class="logo-img" />
+        <h1 class="logo" onclick="redirDashboard()">Nabila Timur Indonesia</h1>
+            </div>
+            <nav>
+                <ul class="ul-nav">
+                    <li><a href="#">Beranda</a></li>
+                    <li><a href="#tentang">Tentang</a></li>
+                    <li><a href="https://natindo.co.id/">Blog</a></li>
+                    <li><a href="mailto:verrysimanjuntak449@gmail.com">Email</a></li>
+                    <li><a href="https://maps.app.goo.gl/sTkqUEnjk28JjDqQ7?g_st=ac">Lokasi</a></li>
+                </ul>
+            </nav>
+            <button class="btn-cta" onclick="redirWhatsapp()">Admin</button>    
+        </header>
+        <div class="container">
+            <div class="intro">
+                <p  class="title animate__animated animate__backInLeft animate__delay-5">Halo! Selamat Datang Di Website Penerimaan Calon Karyawan</p>
+                <p  class="description animate__animated animate__backInRight animate__delay-5">PT. Nabila Timur Indonesia</p>
+                <img src="assets/foto/natindo logo.png" alt="logo natindo" class="img-foto animate__animated animate__pulse animate__delay-5"/>
+            </div>
+        </div>
+        <div class="blog">
+            <p>
+                <a href="https://natindo.co.id/" onclick="redirBlog()"></a>
+            </p>
+            <p>
+                <a href="beranda.html" onclick="redirBeranda()"></a>
+            </p>
+            <div class="tentang">
+                <p class="title">Berikut Divisi Yang Diperlukan</p>
+                <p class="description">"Di Perusahaan"</p>
+        <div class="content">
+            <div class="intro">
+            <p class="title"></p>
+            <p class="description animate__animated animate__backInLeft animate__delay-5">
+                1. Admin Project
+            </p>
+            <p class="description animate__animated animate__backInRight animate__delay-5">
+                2. SDM Project
+            </p>
+            <div class="mt-10"> 
+                    <button class="btn-cta" onclick="redirAdmin()">
+                        <a href="seleksi admin.html">Seleksi Admin</a>
+                        </button>
+                        <br><br>
+                    <button class="btn-cta" onclick="redirLogin()">
+                        <a href="seleksi sdm project.html">Seleksi Sdm Project</a>
+                    </button>
+                </div>
+        </div>
+        </div>
+            </div>
+                    <div class="container">
+                    <div class="card" id="tentang">
+                        <div class="card-natindo">
+                            <img src="assets/icon/toko.png" alt="icon 1" class="icon" />
+                            <p class="card-title">Dokumentasi</p>
+                            <p class="card-description">"Surat Lamaran Dan Data Diri"</p>
+                    </div>
+                    <div class="card-natindo">
+                            <img src="assets/icon/whatsapp-png-image-9.png" alt="icon" class="icon" />
+                            <p class="card-title">Penampilan</p>
+                            <p class="card-description">"Berpakaian Rapih Dan Bersih"</p>
+                    </div>
+                    <div class="card-natindo">
+                            <img src="assets/icon/delivery.jpg" alt="icon 3" class="icon" />
+                            <p class="card-title">Kesehatan</p>
+                            <p class="card-description">"Kesehatan Jasmani & Rohani SDM"</p>
+                    </div>
+                    <div class="card-natindo">
+                <img src="assets/icon/printer.png" alt="icon 6" class="icon" />
+                <p class="card-title">Perangkat Pendukung</p>
+                <p class="card-description">"Memiliki HP Dan Laptop (Tidak Wajib)"</p>
+        </div>
+                    <div class="card-natindo">
+                        <img src="assets/icon/email.png" alt="icon 4" class="icon" />
+                        <p class="card-title">Divisi Keuangan</p>
+                        <p class="card-description">"Mampu Mengatur Keuangan Perusahaan"</p>
+                </div>
+                <div class="card-natindo">
+                    <img src="assets/icon/transaksi.jpg" alt="icon 5" class="icon" />
+                    <p class="card-title">Divisi SDM Project</p>
+                    <p class="card-description">"Minimal SMA Dan Lulus K3 Serta Mampu Kerja Sama Tim"</p>
+            </div>
+            <div class="card-natindo">
+                <img src="assets/icon/printer.png" alt="icon 6" class="icon" />
+                <p class="card-title">Dokumentasi Pekerjaan</p>
+                <p class="card-description">"Menyediakan Segala Bentuk Dokumen Yang Diperlukan"</p>
+        </div>
+            <div class="card-natindo">
+                <img src="assets/icon/printer.png" alt="icon 6" class="icon" />
+                <p class="card-title">Skill & Keahlian</p>
+                <p class="card-description">"Memiliki Skill Dan Mampu Mengoperasikan MS Office"</p>
+        </div>
+            <div class="card-natindo">
+                <img src="assets/icon/printer.png" alt="icon 6" class="icon" />
+                <p class="card-title">Penempatan & Pengalaman</p>
+                <p class="card-description">"Siap Ditempatkan Dimana Saja & Pengalaman Kerja (Tidak Wajib)"</p>
+        </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <p  class="title">&copy; Natindo Since 2008</p>
+        </footer>
+        <script>
+            function redirWhatsapp() {
+                window.location.href = "https://wa.me/089522302382"
+            }
+            function redirAdmin() {
+                window.location.href = "seleksi admin.html"
+            }
+            function redirBlog() {
+                window.location.href = "https://natindo.co.id/"
+            }
+            function redirLocation() {
+                window.location.href = "https://maps.app.goo.gl/sTkqUEnjk28JjDqQ7?g_st=ac"
+            }
+            function redirDashboard() {
+                window.location.href = "beranda.html"
+            }
+            function redirSdm() {
+                window.location.href = "seleksi sdm project.html"
+            }
+        </script>
+    </body>
+</html> 

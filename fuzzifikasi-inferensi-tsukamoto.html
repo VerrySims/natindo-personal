@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fuzzifikasi Seleksi Calon Karyawan</title>
+  <link rel="icon" href="assets/foto/natindo logo.png" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+    
+    .container {
+      width: 80%;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    form {
+      margin-top: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    
+    input[type="number"] {
+      width: 98%;
+      height: 40px;
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    
+    button[type="button"] {
+      width: 100%;
+      height: 40px;
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    button[type="button"]:hover {
+      background-color: #3e8e41;
+    }
+    
+    #hasil {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Fuzzifikasi Seleksi Calon Karyawan</h1>
+    <form>
+      <label>Nama:</label>
+      <input type="name" id="nama" />
+      <br><br>
+      <label>Nilai Wawancara:</label>
+      <input type="number" id="nilai_wawancara" />
+      <br><br>
+      <label>Nilai Keahlian:</label>
+      <input type="number" id="nilai_keahlian" />
+      <br><br>
+      <button type="button" onclick="hitungFuzzifikasi()">Hitung Fuzzifikasi</button>
+    </form>
+    <div id="hasil"></div>
+  </div>
+  
+  <script>
+    function hitungFuzzifikasi() {
+      var nilai_wawancara = parseFloat(document.getElementById("nilai_wawancara").value);
+      var nilai_keahlian = parseFloat(document.getElementById("nilai_keahlian").value);
+      var wawancara_rendah = 0;
+      var wawancara_tinggi = 0;
+      var keahlian_rendah = 0;
+      var keahlian_tinggi = 0;
+      
+      if (nilai_wawancara <= 75) {
+        wawancara_rendah = 1;
+        wawancara_tinggi = 0;
+      } else if (nilai_wawancara >= 100) {
+        wawancara_rendah = 0;
+        wawancara_tinggi = 1;
+      } else {
+        wawancara_rendah = (100 - nilai_wawancara) / 25;
+        wawancara_tinggi = (nilai_wawancara - 75) / 25;
+      }
+      
+      if (nilai_keahlian <= 75) {
+        keahlian_rendah = 1;
+        keahlian_tinggi = 0;
+      } else if (nilai_keahlian >= 100) {
+        keahlian_rendah = 0;
+        keahlian_tinggi = 1;
+      } else {
+        keahlian_rendah = (100 - nilai_keahlian) / 25;
+        keahlian_tinggi = (nilai_keahlian - 75) / 25;
+      }
+      
+      var R1 = Math.min(wawancara_rendah, keahlian_rendah);
+      var R2 = Math.min(wawancara_rendah, keahlian_tinggi);
+      var R3 = Math.min(wawancara_tinggi, keahlian_rendah);
+      var R4 = Math.min(wawancara_tinggi, keahlian_tinggi);
+      
+      var total_nilai = nilai_wawancara + nilai_keahlian;
+      
+      var hasil = "Derajat keanggotaan Wawancara Rendah: " + wawancara_rendah.toFixed(2) + "<br>";
+      hasil += "Derajat keanggotaan Wawancara Tinggi: " + wawancara_tinggi.toFixed(2) + "<br>";
+       hasil += "Derajat keanggotaan Keahlian Rendah: " + keahlian_rendah.toFixed(2) + "<br>";
+      hasil += "Derajat keanggotaan Keahlian Tinggi: " + keahlian_tinggi.toFixed(2) + "<br><br>";
+      hasil += "R1 (Tidak Lolos): " + R1.toFixed(2) + "<br>";
+      hasil += "R2 (Lolos): " + R2.toFixed(2) + "<br>";
+      hasil += "R3 (Lolos): " + R3.toFixed(2) + "<br>";
+      hasil += "R4 (Lolos): " + R4.toFixed(2) + "<br><br>";
+      hasil += "Total Nilai: " + total_nilai + "<br>";
+      
+      if (total_nilai >= 150 && (R2 > 0 || R3 > 0 || R4 > 0)) {
+        hasil += "Status: Lolos";
+      } else {
+        hasil += "Status: Tidak Lolos";
+      }
+      
+      document.getElementById("hasil").innerHTML = hasil;
+    }
+  </script>
+</body>
+</html>

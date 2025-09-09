@@ -93,39 +93,25 @@
     <button id="unduh-pdf">Unduh PDF</button>
   </div>
   <script>
-    document.getElementById("unduh-pdf").addEventListener("click", function() {
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text("Hasil Seleksi Calon Karyawan", 10, 10);
-    const headers = ["Nama", "Umur", "Jenis Kelamin", "Pendidikan", "Handphone/Laptop", "Nilai Wawancara", "Nilai Tes Keahlian", "Hasil Akhir", "Status"];
-    const data = [];
-    for (let i = 0; i < 6; i++) {
-        const nama = document.getElementById(nama-${i}).value;
-        const umur = document.getElementById(umur-${i}).value;
-        const jenisKelamin = document.getElementById(jenis-kelamin-${i}).value;
-        const pendidikan = document.getElementById(pendidikan-${i}).value;
-        const memilikiHandphoneLaptop = document.getElementById(memiliki-handphone-laptop-${i}).value;
-        const input1 = parseFloat(document.getElementById(input1-${i}).value);
-        const input2 = parseFloat(document.getElementById(input2-${i}).value);
+    document.getElementById("hitung").addEventListener("click", function(event) {
+      event.preventDefault();
+      const jumlahCalon = 5;
+      let hasil = "";
+      for (let i = 0; i < jumlahCalon; i++) {
+        const nama = document.getElementById(`nama-${i}`).value;
+        const umur = document.getElementById(`umur-${i}`).value;
+        const jenisKelamin = document.getElementById(`jenis-kelamin-${i}`).value;
+        const pendidikan = document.getElementById(`pendidikan-${i}`).value;
+        const memilikiHandphoneLaptop = document.getElementById(`memiliki-handphone-laptop-${i}`).value;
+        const input1 = parseFloat(document.getElementById(`input1-${i}`).value);
+        const input2 = parseFloat(document.getElementById(`input2-${i}`).value);
+        // Hitung hasil
         const totalSkor = input1 + input2;
-        const hasilAkhir = 75 + (totalSkor - 150) / 10;
-        const status = hasilAkhir >= 75 ? "DITERIMA" : "TIDAK DITERIMA";
-        data.push([nama, umur, jenisKelamin, pendidikan, memilikiHandphoneLaptop, input1.toFixed(2), input2.toFixed(2), hasilAkhir.toFixed(2), status]);
-    }
-    let y = 20;
-    doc.setFontSize(10);
-    headers.forEach((header, index) => {
-        doc.text(header, 10 + index * 20, y);
-    });
-    y += 10;
-    data.forEach(row => {
-        row.forEach((cell, index) => {
-            doc.text(cell.toString(), 10 + index * 20, y);
-        });
-        y += 10;
-    });
-    doc.save("hasil_seleksi.pdf");
-});
+        const minimalSkor = 150;
+        if (isNaN(input1) || isNaN(input2)) {
+          hasil += `<p style='color:red;'>Harap isi semua nilai input dengan benar untuk ${nama}!</p>`;
+          continue;
+        }
 
 // Fuzzifikasi
 const rendah1 = fuzzifikasiRendah(input1);
@@ -186,5 +172,4 @@ hasil += `
 
   </script>
 </body>
-
 </html>

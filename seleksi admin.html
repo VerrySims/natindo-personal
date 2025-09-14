@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Nabila Timur Indonesia</title>
-  <link rel="icon" href="assets/foto/natindo logo.png" />
-  <style>
-    body {
+  <meta charset="UTF-8">
+  <title>Seleksi Calon Karyawan</title>
+ <style>
+   body {
       font-family: Arial, sans-serif;
     }
     .container {
@@ -26,6 +26,13 @@
       padding: 10px;
       border: 1px solid #ccc;
     }
+    input[type="text"] {
+      width: 97%;
+      height: 20px;
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
     button {
       width: 100%;
       height: 40px;
@@ -39,31 +46,45 @@
     button:hover {
       background-color: #3e8e41;
     }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #444;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #eee;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    tr:hover {
+      background-color: #ddd;
+    }
   </style>
+  <!-- jsPDF dan plugin autotable -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <h1>Penerimaan Calon Karyawan</h1>
-    <form id="form">
-      <script>
-        for (let i =   0; i < 5; i++) {
-          document.write(`
-            <h2>Calon Karyawan ${i + 1}</h2>
-            <label>Nama:</label>
-            <input type="text" id="nama-${i}" required>
-            <br><br>
-            <label>Umur:</label>
-            <input type="number" id="umur-${i}" required>
-      
-            <label>Jenis Kelamin:</label>
-            <select id="jenis-kelamin-${i}" required>
+    <h2>Seleksi Calon Karyawan</h2>
+    <form id="form" novalidate>
+      <input type="text" id="nama" placeholder="Nama Calon" required>
+      <input type="number" id="umur" placeholder="Umur" required>
+           <label>Jenis Kelamin:</label>
+            <select id="jenis-kelamin" required>
               <option value="">Pilih Jenis Kelamin</option>
               <option value="Pria">Pria</option>
               <option value="Wanita">Wanita</option>
             </select>
             <br><br>
-            <label>Pendidikan:</label>
-            <select id="pendidikan-${i}" required>
+            <label>Pendidikan :</label>
+            <select id="pendidikan" required>
               <option value="">Pilih Pendidikan</option>
               <option value="SMA">SMA</option>
               <option value="D3">D3</option>
@@ -71,105 +92,100 @@
               <option value="S2">S2</option>
             </select>
             <br><br>
-            <label>Memiliki Handphone/Laptop:</label>
-            <select id="memiliki-handphone-laptop-${i}" required>
-              <option value="">Pilih</option>
-              <option value="Handphone">Handphone</option>
-              <option value="Handphone dan Laptop">Handphone dan Laptop</option>
-            </select>
-            <br><br>
-            <label>Nilai Wawancara:</label>
-            <input type="number" id="input1-${i}" required>
-            <label>Nilai Tes Komputer:</label>
-            <input type="number" id="input2-${i}" required>
-            <hr>
-          `);
-        }
-      </script>
-      <button id="hitung">Hitung</button>
+      <input type="number" id="wawancara" placeholder="Nilai Wawancara" required>
+      <input type="number" id="komputer" placeholder="Nilai Tes Komputer" required>
+      <button id="hitung" type="button">Hitung & Simpan</button>
     </form>
-    <div id="hasil"></div>
-    <br><br>
-    <button id="unduh-pdf">Unduh PDF</button>
+
+    <h3>Hasil Seleksi</h3>
+    <table id="tabelHasil">
+      <thead>
+        <tr>
+          <th>Peringkat</th>
+          <th>Nama</th>
+          <th>Umur</th>
+          <th>Jenis Kelamin</th>
+          <th>Pendidikan</th>
+          <th>Wawancara</th>
+          <th>Komputer</th>
+          <th>Total Skor</th>
+          <th>Output</th>
+          <th>Hasil Seleksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data tampil otomatis di sini -->
+      </tbody>
+    </table>
+<br><br>
+    <button id="exportPDF" type="button">Export ke PDF</button>
   </div>
+
   <script>
-    document.getElementById("hitung").addEventListener("click", function(event) {
-      event.preventDefault();
-      const jumlahCalon = 5;
-      let hasil = "";
-      for (let i = 0; i < jumlahCalon; i++) {
-        const nama = document.getElementById(`nama-${i}`).value;
-        const umur = document.getElementById(`umur-${i}`).value;
-        const jenisKelamin = document.getElementById(`jenis-kelamin-${i}`).value;
-        const pendidikan = document.getElementById(`pendidikan-${i}`).value;
-        const memilikiHandphoneLaptop = document.getElementById(`memiliki-handphone-laptop-${i}`).value;
-        const input1 = parseFloat(document.getElementById(`input1-${i}`).value);
-        const input2 = parseFloat(document.getElementById(`input2-${i}`).value);
-        // Hitung hasil
-        const totalSkor = input1 + input2;
-        const minimalSkor = 150;
-        if (isNaN(input1) || isNaN(input2)) {
-          hasil += `<p style='color:red;'>Harap isi semua nilai input dengan benar untuk ${nama}!</p>`;
-          continue;
-        }
+    let dataCalon = [];
 
-// Fuzzifikasi
-const rendah1 = fuzzifikasiRendah(input1);
-const tinggi1 = fuzzifikasiTinggi(input1);
-const rendah2 = fuzzifikasiRendah(input2);
-const tinggi2 = fuzzifikasiTinggi(input2);
+    document.getElementById("hitung").addEventListener("click", function() {
+      const nama = document.getElementById("nama").value;
+      const umur = document.getElementById("umur").value;
+      const jenisKelamin = document.getElementById("jenis-kelamin").value;
+      const pendidikan = document.getElementById("pendidikan").value;
+      const wawancara = parseFloat(document.getElementById("wawancara").value);
+      const komputer = parseFloat(document.getElementById("komputer").value);
 
-// Inferensi
-const rule1 = Math.min(rendah1, rendah2);
-const rule2 = Math.min(rendah1, tinggi2);
-const rule3 = Math.min(tinggi1, rendah2);
-const rule4 = Math.min(tinggi1, tinggi2);
-
-// Defuzzifikasi
-let output = 75 + (totalSkor - 150) / 10;
-// Pastikan output tidak lebih dari 100
-output = Math.min(output, 100);
-let keterangan;
-if (totalSkor < minimalSkor) {
-  keterangan = `TIDAK DITERIMA (Total skor kurang dari ${minimalSkor})`;
-} else if (output >= 75 && output <= 100) {
-  keterangan = "DITERIMA";
-} else if (output >= 0 && output < 75) {
-  keterangan = "TIDAK DITERIMA";
-}
-
-// Tampilkan hasil
-hasil += `
-  <h2>Hasil untuk ${nama}:</h2>
-  <p>Nama: ${nama}</p>
-  <p>Umur: ${umur}</p>
-  <p>Jenis Kelamin: ${jenisKelamin}</p>
-  <p>Pendidikan: ${pendidikan}</p>
-  <p>Memiliki Handphone/Laptop: ${memilikiHandphoneLaptop}</p>
-  <p>Nilai Wawancara: ${input1}</p>
-  <p>Nilai Tes Komputer: ${input2}</p>
-  <p>Total Skor: ${totalSkor}</p>
-  <p>Nilai Output: ${output.toFixed(2)}</p>
-  <p>Keterangan: ${keterangan}</p>
-  <hr>
-`;
+      if (!nama || isNaN(wawancara) || isNaN(komputer)) {
+        alert("Lengkapi semua input terlebih dahulu!");
+        return;
       }
-      document.getElementById("hasil").innerHTML = hasil;
+
+      const totalSkor = wawancara + komputer;
+      const output = Math.min(100, 75 + (totalSkor - 150) / 10);
+      const hasilSeleksi = output >= 75 ? "Diterima" : "Tidak Diterima";
+
+      dataCalon.push({ nama, umur, jenisKelamin, pendidikan, wawancara, komputer, totalSkor, output, hasilSeleksi });
+
+      // Urutkan berdasarkan output tertinggi
+      dataCalon.sort((a, b) => b.output - a.output);
+
+      // Tampilkan ke tabel
+      const tbody = document.querySelector("#tabelHasil tbody");
+      tbody.innerHTML = "";
+      dataCalon.forEach((calon, index) => {
+        const row = `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${calon.nama}</td>
+            <td>${calon.umur}</td>
+            <td>${calon.jenisKelamin}</td>
+            <td>${calon.pendidikan}</td>
+            <td>${calon.wawancara}</td>
+            <td>${calon.komputer}</td>
+            <td>${calon.totalSkor}</td>
+            <td>${calon.output.toFixed(2)}</td>
+            <td>${calon.hasilSeleksi}</td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+
+      // Reset form
+      document.getElementById("form").reset();
     });
 
-    // Fungsi fuzzifikasi
-    function fuzzifikasiRendah(x) {
-      if (x <= 40) return 1;
-      else if (x >= 60) return 0;
-      else return (60 - x) / 20;
-    }
+    // Export ke PDF
+    document.getElementById("exportPDF").addEventListener("click", function() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
 
-    function fuzzifikasiTinggi(x) {
-      if (x <= 40) return 0;
-      else if (x >= 60) return 1;
-      else return (x - 40) / 20;
-    }
+      doc.text("Hasil Seleksi Calon Karyawan", 14, 15);
 
+      // Ambil tabel untuk diekspor
+      doc.autoTable({
+        startY: 20,
+        html: "#tabelHasil"
+      });
+
+      doc.save("hasil_seleksi.pdf");
+    });
   </script>
 </body>
 </html>
